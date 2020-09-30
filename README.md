@@ -6,6 +6,7 @@ Run main.py with the command line arguments:
 
 ```shell
 python main.py -i car.jpg -o output.png
+python main.py -i car.jpg -o output.txt
 python main.py -i C:\python\ascii\src\car.jpg -o output.jpg
 ```
 
