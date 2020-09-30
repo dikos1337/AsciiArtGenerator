@@ -8,9 +8,9 @@ class Application:
         self.args = self.cla.args
         self.output_is_txt = (self.args.output_file[-4:] == '.txt')
 
-        if all((self.args.input_file,self.args.output_file)) and self.output_is_txt == False:
+        if all((self.args.input_file, self.args.output_file)) and self.output_is_txt is False:
             self.default_pipeline()
-        elif all((self.args.input_file,self.args.output_file)) and self.output_is_txt == True:
+        elif all((self.args.input_file, self.args.output_file)) and self.output_is_txt is True:
             self.txt_output_pipeline()
         else:
             self.main_menu()
@@ -18,17 +18,15 @@ class Application:
     def default_pipeline(self):
         art = AsciiArtGenerator()
         art.load(self.args.input_file)
-        art._create_new_image()
-        art._draw_chars()
+        art.create_new_image()
+        art.draw_chars()
         art.save_to_img(self.args.output_file)
 
     def txt_output_pipeline(self):
         art = AsciiArtGenerator()
         art.load(self.args.input_file)
-        art._draw_chars_txt()
+        art.draw_chars_txt()
         art.save_to_txt(self.args.output_file)
-
-
 
     @staticmethod
     def main_menu():

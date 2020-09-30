@@ -41,11 +41,11 @@ class AsciiArtGenerator:
         else:
             return "."
 
-    def _create_new_image(self) -> None:
+    def create_new_image(self) -> None:
         self.new_image = Image.new('RGB', size=(self.width, self.height), color=(255, 255, 255))
         self.new_image = ImageOps.grayscale(self.new_image)
 
-    def _draw_chars(self) -> None:
+    def draw_chars(self) -> None:
         idraw = ImageDraw.Draw(self.new_image)
 
         for x in tqdm(range(0, self.width, 5)):
@@ -54,19 +54,19 @@ class AsciiArtGenerator:
                 char = self._color_to_char(color)
                 idraw.text((x, y), char, font=self.font, fill="black")
 
-    def _draw_chars_txt(self) -> None:
-        self.ascii_image_txt = [[] for x in range(self.height)]
+    def draw_chars_txt(self) -> None:
+        self.ascii_image_txt = [[] for _ in range(self.height)]
         for x in tqdm(range(self.width)):
             for y in range(self.height):
-               color = self.pixels[x, y]
-               self.ascii_image_txt[y].append(self._color_to_char(color))
+                color = self.pixels[x, y]
+                self.ascii_image_txt[y].append(self._color_to_char(color))
 
     def save_to_img(self, file_name: str) -> None:
         """Saves the result of program execution to a file"""
-        self.new_image.save_to_img(file_name)
+        self.new_image.save(file_name)
 
     def save_to_txt(self, file_name: str) -> None:
         """Saves the result of program execution to a file"""
-        with open(file_name,"w") as f:
+        with open(file_name, "w") as f:
             for column in self.ascii_image_txt[::2]:
                 f.writelines(''.join(column) + '\n')
