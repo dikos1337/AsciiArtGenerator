@@ -1,0 +1,3 @@
+# AsciiArtGenerator
+
+init
