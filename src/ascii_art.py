@@ -6,7 +6,7 @@ class AsciiArtGenerator:
     def __init__(self):
         pass
 
-    def load(self, file_name):
+    def load(self, file_name: str) -> None:
         self.image = Image.open(file_name)
         self.image = ImageOps.grayscale(self.image)
         self.pixels = self.image.load()
@@ -41,11 +41,11 @@ class AsciiArtGenerator:
         else:
             return "."
 
-    def _create_new_image(self):
+    def _create_new_image(self) -> None:
         self.new_image = Image.new('RGB', size=(self.width, self.height), color=(255, 255, 255))
         self.new_image = ImageOps.grayscale(self.new_image)
 
-    def _draw_chars(self):
+    def _draw_chars(self) -> None:
         idraw = ImageDraw.Draw(self.new_image)
 
         for x in tqdm(range(0, self.width, 5)):
@@ -54,5 +54,6 @@ class AsciiArtGenerator:
                 char = self._color_to_char(color)
                 idraw.text((x, y), char, font=self.font, fill="black")
 
-    def save(self, file_name):
+    def save(self, file_name: str) -> None:
+        """Saves the result of program execution to a file"""
         self.new_image.save(file_name)
