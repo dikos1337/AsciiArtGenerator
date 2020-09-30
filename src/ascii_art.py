@@ -54,6 +54,19 @@ class AsciiArtGenerator:
                 char = self._color_to_char(color)
                 idraw.text((x, y), char, font=self.font, fill="black")
 
-    def save(self, file_name: str) -> None:
+    def _draw_chars_txt(self) -> None:
+        self.ascii_image_txt = [[] for x in range(self.height)]
+        for x in tqdm(range(self.width)):
+            for y in range(self.height):
+               color = self.pixels[x, y]
+               self.ascii_image_txt[y].append(self._color_to_char(color))
+
+    def save_to_img(self, file_name: str) -> None:
         """Saves the result of program execution to a file"""
-        self.new_image.save(file_name)
+        self.new_image.save_to_img(file_name)
+
+    def save_to_txt(self, file_name: str) -> None:
+        """Saves the result of program execution to a file"""
+        with open(file_name,"w") as f:
+            for column in self.ascii_image_txt[::2]:
+                f.writelines(''.join(column) + '\n')

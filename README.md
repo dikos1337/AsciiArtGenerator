@@ -15,3 +15,5 @@ python main.py -i C:\python\ascii\src\car.jpg -o output.jpg
 
 ![Example 2 input](./examples/car.jpg)
 ![Example 2 output](./examples/car_output.png)
+
+![Example 2 txt_output](./examples/txt_output.jpg)

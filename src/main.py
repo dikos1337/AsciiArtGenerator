@@ -6,15 +6,29 @@ class Application:
     def __init__(self):
         self.cla = CLA()
         self.args = self.cla.args
+        self.output_is_txt = (self.args.output_file[-4:] == '.txt')
 
-        if self.args.input_file and self.args.output_file:
-            art = AsciiArtGenerator()
-            art.load(self.args.input_file)
-            art._create_new_image()
-            art._draw_chars()
-            art.save(self.args.output_file)
+        if all((self.args.input_file,self.args.output_file)) and self.output_is_txt == False:
+            self.default_pipeline()
+        elif all((self.args.input_file,self.args.output_file)) and self.output_is_txt == True:
+            self.txt_output_pipeline()
         else:
             self.main_menu()
+
+    def default_pipeline(self):
+        art = AsciiArtGenerator()
+        art.load(self.args.input_file)
+        art._create_new_image()
+        art._draw_chars()
+        art.save_to_img(self.args.output_file)
+
+    def txt_output_pipeline(self):
+        art = AsciiArtGenerator()
+        art.load(self.args.input_file)
+        art._draw_chars_txt()
+        art.save_to_txt(self.args.output_file)
+
+
 
     @staticmethod
     def main_menu():
