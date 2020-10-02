@@ -8,10 +8,12 @@ class Application:
         self.args = self.cla.args
         self.output_is_txt = (self.args.output_file[-4:] == '.txt')
 
-        if all((self.args.input_file, self.args.output_file)) and self.output_is_txt is False:
+        if all((self.args.input_file, self.args.output_file)) and self.args.color_bool is False:
             self.default_pipeline()
         elif all((self.args.input_file, self.args.output_file)) and self.output_is_txt is True:
             self.txt_output_pipeline()
+        elif all((self.args.input_file, self.args.output_file, self.args.color_bool)):
+            self.color_pipeline()
         else:
             self.main_menu()
 
@@ -21,6 +23,14 @@ class Application:
         art.create_new_image()
         art.draw_chars()
         art.save_to_img(self.args.output_file)
+
+    def color_pipeline(self):
+        art = AsciiArtGenerator()
+        art.load(self.args.input_file)
+        art.create_new_image(color=True)
+        art.draw_color_chars()
+        art.save_to_img(self.args.output_file)
+
 
     def txt_output_pipeline(self):
         art = AsciiArtGenerator()

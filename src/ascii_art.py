@@ -3,14 +3,14 @@ from tqdm import tqdm
 
 
 class AsciiArtGenerator:
+    new_image: Image
+
     def __init__(self):
         pass
 
     def load(self, file_name: str) -> None:
         self.image = Image.open(file_name)
-        self.image = ImageOps.grayscale(self.image)
-        self.pixels = self.image.load()
-
+        self.image_grayscaled = ImageOps.grayscale(self.image)
         self.width = self.image.width
         self.height = self.image.height
 
@@ -41,24 +41,39 @@ class AsciiArtGenerator:
         else:
             return "."
 
-    def create_new_image(self) -> None:
+    def create_new_image(self, color=False) -> Image:
         self.new_image = Image.new('RGB', size=(self.width, self.height), color=(255, 255, 255))
-        self.new_image = ImageOps.grayscale(self.new_image)
+        if color == False:
+            self.new_image = ImageOps.grayscale(self.new_image)
+        return self.new_image
 
     def draw_chars(self) -> None:
         idraw = ImageDraw.Draw(self.new_image)
+        gray_pixels = self.image_grayscaled.load()
 
         for x in tqdm(range(0, self.width, 5)):
             for y in range(0, self.height, 5):
-                color = self.pixels[x, y]  # узнаём значение цвета пикселя
+                color = gray_pixels[x, y]  # узнаём значение цвета пикселя
                 char = self._color_to_char(color)
                 idraw.text((x, y), char, font=self.font, fill="black")
 
+    def draw_color_chars(self) -> None:
+
+        idraw = ImageDraw.Draw(self.new_image)
+        pixels = self.image.load()
+        for x in tqdm(range(0, self.width, 5)):
+            for y in range(0, self.height, 5):
+                color = pixels[x, y]
+
+                char = self._color_to_char(int(sum(color) / (len(color))))
+                idraw.text((x, y), char, font=self.font, fill=color)
+
     def draw_chars_txt(self) -> None:
+        gray_pixels = self.image_grayscaled.load()
         self.ascii_image_txt = [[] for _ in range(self.height)]
         for x in tqdm(range(self.width)):
             for y in range(self.height):
-                color = self.pixels[x, y]
+                color = gray_pixels[x, y]
                 self.ascii_image_txt[y].append(self._color_to_char(color))
 
     def save_to_img(self, file_name: str) -> None:
