@@ -25,24 +25,26 @@ class AsciiArtGenerator:
         if brightness < 25:
             return "#"
         elif 25 < brightness < 60:
-            return 'O'
+            return "O"
         elif 60 < brightness < 100:
-            return '?'
+            return "?"
         elif 100 < brightness < 140:
-            return '!'
+            return "!"
         elif 140 < brightness < 180:
-            return ';'
+            return ";"
         elif 180 < brightness < 220:
-            return ':'
+            return ":"
         elif 220 < brightness < 235:
-            return ','
+            return ","
         elif brightness > 235:
-            return '.'
+            return "."
         else:
             return "."
 
     def create_new_image(self, color=False) -> Image:
-        self.new_image = Image.new('RGB', size=(self.width, self.height), color=(255, 255, 255))
+        self.new_image = Image.new(
+            "RGB", size=(self.width, self.height), color=(255, 255, 255)
+        )
         if color == False:
             self.new_image = ImageOps.grayscale(self.new_image)
         return self.new_image
@@ -84,4 +86,4 @@ class AsciiArtGenerator:
         """Saves the result of program execution to a file"""
         with open(file_name, "w") as f:
             for column in self.ascii_image_txt[::2]:
-                f.writelines(''.join(column) + '\n')
+                f.writelines("".join(column) + "\n")
